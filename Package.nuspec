@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WebDriverAutomationFramework</id>
+    <version>1.0.1</version>
+    <authors>Akash Srivastava</authors>
+    <owners>Reebonz</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package is created to as to abstact the interations between webdriver and the page objects</description>
+    <releaseNotes>trying to isolate the implementation with the what is visible for consumption</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>Selenium Webdriver, Framework</tags>
+    <dependencies>
+      <dependency id="Selenium.Support" version="2.53.0" />
+	  <dependency id="Selenium.WebDriver" version="2.53.0" />
+	  <dependency id="Selenium.WebDriver.PhantomJS.Xplatform" version="2.45.0.1" />
+    </dependencies>
+  </metadata>
+</package>

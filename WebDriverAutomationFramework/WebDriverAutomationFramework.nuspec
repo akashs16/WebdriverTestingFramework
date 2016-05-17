@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WebdriverAutomationFramework</id>
+    <version>1.0.10</version>
+    <title></title>
+    <authors>Akash Srivastava</authors>
+    <owners>Reebonz</owners>
+    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
+    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package is created to as to abstact the interations between webdriver and the page objects</description>
+    <releaseNotes>fixed firefox driver intraction</releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags>selenium framework</tags>
+  </metadata>
+  	<files>
+	<file src="..\WebDriverAutomationFramework\Resources\Drivers\*.exe" target="..\..\Resources\Drivers"/> 
+	</files>
+
+</package>
