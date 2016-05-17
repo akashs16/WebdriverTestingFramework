@@ -9,6 +9,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Opera;
 using OpenQA.Selenium.PhantomJS;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Safari;
 using OpenQA.Selenium.Support.UI;
 
@@ -45,7 +46,7 @@ namespace WebDriverAutomationFramework
                     Driver = new InternetExplorerDriver(path);
                     break;
                 case DriverType.FireFox:
-                    Driver = new FirefoxDriver(new FirefoxBinary(), new FirefoxProfile(), TimeSpan.FromSeconds(180));
+                    Driver = new FirefoxDriver();
                     break;
                 case DriverType.Opera:
                     Driver = new OperaDriver(path);

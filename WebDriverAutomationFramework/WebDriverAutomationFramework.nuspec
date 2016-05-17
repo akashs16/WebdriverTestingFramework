@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>WebdriverAutomationFramework</id>
-    <version>1.0.10</version>
+    <version>1.0.4</version>
     <title></title>
     <authors>Akash Srivastava</authors>
     <owners>Reebonz</owners>
@@ -11,9 +11,14 @@
     <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package is created to as to abstact the interations between webdriver and the page objects</description>
-    <releaseNotes>fixed firefox driver intraction</releaseNotes>
+    <releaseNotes>with all supported drivers</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>selenium framework</tags>
+	<dependencies>
+	<dependency id="MSBuildTasks" version="1.5.0.183" />
+	<dependency id="Selenium.Support" version="2.53.0" />
+	<dependency id="Selenium.WebDriver" version="2.53.0" />
+	</dependencies>
   </metadata>
   	<files>
 	<file src="..\WebDriverAutomationFramework\Resources\Drivers\*.exe" target="..\..\Resources\Drivers"/> 
