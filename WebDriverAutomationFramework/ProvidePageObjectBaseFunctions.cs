@@ -8,6 +8,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Opera;
 using OpenQA.Selenium.PhantomJS;
 using OpenQA.Selenium.Safari;
@@ -168,6 +169,20 @@ namespace WebDriverAutomationFramework
             var element = GetElement(webElement, webElementType, identifier);
             var select = new SelectElement(element);
             Select(select, selectionType, selectionValue);
+        }
+
+        public void MoveToElement(string identifier, WebElementType webElementType)
+        {
+            var element = GetElement(identifier, webElementType);
+
+            var action = new Actions(this.Driver);
+            action.MoveToElement(element).Perform();
+        }
+
+        public void MoveToElement(IWebElement webElement)
+        {
+            var action = new Actions(this.Driver);
+            action.MoveToElement(webElement).Perform();
         }
 
         public string GetText(IWebElement webElement)

@@ -50,5 +50,9 @@ namespace WebDriverAutomationFramework
         void SelectWebElement(IWebElement webElement, WebElementType webElementType, string selectionValue, SelectionType selectionType);
 
         void SelectWebElement(IWebElement webElement, string identifier, WebElementType webElementType, string selectionValue, SelectionType selectionType);
+
+        void MoveToElement(string identifier, WebElementType webElementType);
+
+        void MoveToElement(IWebElement webElement);
     }
 }
