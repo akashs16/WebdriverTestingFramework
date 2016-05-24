@@ -127,6 +127,18 @@ namespace WebDriverAutomationFramework
             return element.Text;
         }
 
+        public object GetAttribute(IWebElement webElement, string identifier, WebElementType webElementType, string attribute)
+        {
+            var element = GetElement(webElement, webElementType, identifier);
+            return element.GetAttribute(attribute);
+        }
+
+        public object GetAttribute(string identifier, WebElementType webElementType, string attribute)
+        {
+            var element = GetElement(identifier, webElementType);
+            return element.GetAttribute(attribute);
+        }
+
         public string GetText(IWebElement webElement)
         {
             return webElement.Text;
@@ -164,11 +176,6 @@ namespace WebDriverAutomationFramework
                 default:
                     throw new Exception("The specified WebElementType was not found.");
             }
-        }
-
-        public T GetEquivalentEnumValue<T>(string driverName)
-        {
-            return (T)Enum.Parse(typeof(T), driverName, true);
         }
 
         public object GetMatchingPropertyName(string name, Type instance)
@@ -253,7 +260,7 @@ namespace WebDriverAutomationFramework
             }
         }
 
-        private IWebElement RetrieveElement(ISearchContext searchContext, WebElementType webElementType, string identifier)
+        private static IWebElement RetrieveElement(ISearchContext searchContext, WebElementType webElementType, string identifier)
         {
             switch (webElementType)
             {
@@ -276,6 +283,11 @@ namespace WebDriverAutomationFramework
                 default:
                     throw new Exception("The specified WebElementType was not found.");
             }
+        }
+
+        private static T GetEquivalentEnumValue<T>(string driverName)
+        {
+            return (T)Enum.Parse(typeof(T), driverName, true);
         }
     }
 }

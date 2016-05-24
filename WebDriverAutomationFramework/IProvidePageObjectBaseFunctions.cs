@@ -38,5 +38,9 @@ namespace WebDriverAutomationFramework
         string GetText(string identifier, WebElementType webElementType);
 
         string GetText(IWebElement webElement);
+
+        object GetAttribute(IWebElement webElement, string identifier, WebElementType webElementType, string attribute);
+
+        object GetAttribute(string identifier, WebElementType webElementType, string attribute);
     }
 }
