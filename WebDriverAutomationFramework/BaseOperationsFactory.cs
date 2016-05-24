@@ -1,4 +1,6 @@
-﻿namespace WebDriverAutomationFramework
+﻿using OpenQA.Selenium;
+
+namespace WebDriverAutomationFramework
 {
     public class BaseOperationsFactory
     {
@@ -8,6 +10,11 @@
         }
 
         public IProvidePageObjectBaseFunctions Create(string driver)
+        {
+            return new ProvidePageObjectBaseFunctions(driver);
+        }
+
+        public IProvidePageObjectBaseFunctions Create(IWebDriver driver)
         {
             return new ProvidePageObjectBaseFunctions(driver);
         }

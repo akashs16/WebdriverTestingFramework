@@ -33,6 +33,11 @@ namespace WebDriverAutomationFramework
             SetDriver(driver, parent, DriverLocation);
         }
 
+        internal ProvidePageObjectBaseFunctions(IWebDriver driver)
+        {
+            Driver = driver;
+        }
+
         public void SetDriver(string driver, DirectoryInfo parent, string driverLocation)
         {
             var enumValue = GetEquivalentEnumValue<DriverType>(driver);
