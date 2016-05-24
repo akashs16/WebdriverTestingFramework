@@ -57,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvidePageObjectBaseFunctions.cs" />
     <Compile Include="SearchType.cs" />
+    <Compile Include="SelectionType.cs" />
     <Compile Include="WebElementType.cs" />
   </ItemGroup>
   <ItemGroup>

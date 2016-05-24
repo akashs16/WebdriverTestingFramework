@@ -44,5 +44,11 @@ namespace WebDriverAutomationFramework
         object GetAttribute(IWebElement webElement, string identifier, WebElementType webElementType, string attribute);
 
         object GetAttribute(string identifier, WebElementType webElementType, string attribute);
+
+        void SelectWebElement(string identifier, WebElementType webElementType, string selectionValue, SelectionType selectionType);
+
+        void SelectWebElement(IWebElement webElement, WebElementType webElementType, string selectionValue, SelectionType selectionType);
+
+        void SelectWebElement(IWebElement webElement, string identifier, WebElementType webElementType, string selectionValue, SelectionType selectionType);
     }
 }

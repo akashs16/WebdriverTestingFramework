@@ -145,6 +145,26 @@ namespace WebDriverAutomationFramework
             return element.GetAttribute(attribute);
         }
 
+        public void SelectWebElement(string identifier, WebElementType webElementType, string selectionValue, SelectionType selectionType)
+        {
+            var element = GetElement(identifier, webElementType);
+            var select = new SelectElement(element);
+            Select(select, selectionType, selectionValue);
+        }
+
+        public void SelectWebElement(IWebElement webElement, WebElementType webElementType, string selectionValue, SelectionType selectionType)
+        {
+            var select = new SelectElement(webElement);
+            Select(select, selectionType, selectionValue);
+        }
+
+        public void SelectWebElement(IWebElement webElement, string identifier, WebElementType webElementType, string selectionValue, SelectionType selectionType)
+        {
+            var element = GetElement(webElement, webElementType, identifier);
+            var select = new SelectElement(element);
+            Select(select, selectionType, selectionValue);
+        }
+
         public string GetText(IWebElement webElement)
         {
             return webElement.Text;
@@ -294,6 +314,24 @@ namespace WebDriverAutomationFramework
         private static T GetEquivalentEnumValue<T>(string driverName)
         {
             return (T)Enum.Parse(typeof(T), driverName, true);
+        }
+
+        private void Select(SelectElement selectElement, SelectionType selectionType, string selectionValue)
+        {
+            switch (selectionType)
+            {
+                case SelectionType.Index:
+                    selectElement.SelectByIndex(int.Parse(selectionValue));
+                    break;
+                case SelectionType.Text:
+                    selectElement.SelectByText(selectionValue);
+                    break;
+                case SelectionType.Value:
+                    selectElement.SelectByValue(selectionValue);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(selectionType), selectionType, null);
+            }
         }
     }
 }
