@@ -13,9 +13,11 @@ namespace WebDriverAutomationFramework
 
         void NavigateToUrl(Uri uri);
 
-        void ClickOnElement(string identifier, WebElementType webElementType, TimeSpan timeforWaiting);
+        void ClickOnElement(string identifier, WebElementType webElementType, TimeSpan timeForWaiting);
 
-        void ClickOnElement(IWebElement webElement, TimeSpan timeforWaiting);
+        void ClickOnElement(IWebElement webElement, TimeSpan timeForWaiting);
+
+        void ClickOnElement(IWebElement webElement, string identifier, WebElementType webElementType, TimeSpan timeForWaiting);
 
         IWebElement GetElement(IWebElement webElement, WebElementType webElementType, string identifier);
 

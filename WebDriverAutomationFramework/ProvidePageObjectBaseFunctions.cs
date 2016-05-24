@@ -82,6 +82,12 @@ namespace WebDriverAutomationFramework
             Thread.Sleep(timeSpanForWait);
         }
 
+        public void ClickOnElement(IWebElement webElement, string identifier, WebElementType webElementType, TimeSpan timeForWaiting)
+        {
+            var element = GetElement(webElement, webElementType, identifier);
+            ClickOnElement(element, timeForWaiting);
+        }
+
         public IWebElement GetElement(IWebElement webElement, WebElementType webElementType, string identifier)
         {
             return SearchAndRetrieveElement(SearchType.Element, webElementType, identifier, webElement);
