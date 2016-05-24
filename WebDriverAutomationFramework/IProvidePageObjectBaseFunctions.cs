@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using OpenQA.Selenium;
 
@@ -16,11 +17,15 @@ namespace WebDriverAutomationFramework
 
         void ClickOnElement(IWebElement webElement, TimeSpan timeforWaiting);
 
-        IWebElement FindElementByElement(IWebElement webElement, WebElementType webElementType, string identifier);
+        IWebElement GetElement(IWebElement webElement, WebElementType webElementType, string identifier);
 
-        IWebElement FindElementByLocator(string identifier, WebElementType webElementType);
+        IWebElement GetElement(string identifier, WebElementType webElementType);
 
-        void WaitForLoad(string identifier, TimeSpan fromSeconds, WebElementType webElementType);
+        IEnumerable<IWebElement> GetElements(string identifier, WebElementType webElementType);
+
+        IEnumerable<IWebElement> GetElements(IWebElement webElement, string identifier, WebElementType webElementType);
+
+        void WaitForLoad(string identifier, WebElementType webElementType, TimeSpan fromSeconds);
 
         void ClearAndSendText(string identifier, WebElementType webElementType, string text);
 
@@ -28,7 +33,7 @@ namespace WebDriverAutomationFramework
 
         void PerformSubmit(IWebElement button, TimeSpan timeSpanForWaiting);
 
-        object GetAppropriateName(string name, Type type);
+        object GetMatchingPropertyName(string name, Type type);
 
         string GetText(string identifier, WebElementType webElementType);
 

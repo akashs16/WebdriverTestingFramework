@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +10,6 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Opera;
 using OpenQA.Selenium.PhantomJS;
-using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Safari;
 using OpenQA.Selenium.Support.UI;
 
@@ -71,7 +71,7 @@ namespace WebDriverAutomationFramework
 
         public void ClickOnElement(string identifier, WebElementType webElementType, TimeSpan timeSpanForWait)
         {
-            var webElement = FindElementByLocator(identifier, webElementType);
+            var webElement = GetElement(identifier, webElementType);
             webElement.Click();
             Thread.Sleep(timeSpanForWait);
         }
@@ -82,31 +82,25 @@ namespace WebDriverAutomationFramework
             Thread.Sleep(timeSpanForWait);
         }
 
-        public IWebElement FindElementByElement(IWebElement webElement, WebElementType webElementType, string identifier)
+        public IWebElement GetElement(IWebElement webElement, WebElementType webElementType, string identifier)
         {
-            switch (webElementType)
-            {
-                case WebElementType.Class:
-                    return webElement.FindElement(By.ClassName(identifier));
-                case WebElementType.Id:
-                    return webElement.FindElement(By.Id(identifier));
-                case WebElementType.CssSelector:
-                    return webElement.FindElement(By.CssSelector(identifier));
-                case WebElementType.LinkText:
-                    return webElement.FindElement(By.LinkText(identifier));
-                case WebElementType.Name:
-                    return webElement.FindElement(By.Name(identifier));
-                case WebElementType.PartialLinkText:
-                    return webElement.FindElement(By.PartialLinkText(identifier));
-                case WebElementType.TagName:
-                    return webElement.FindElement(By.TagName(identifier));
-                case WebElementType.Xpath:
-                    return webElement.FindElement(By.XPath(identifier));
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(webElementType), webElementType, null);
-            }
+            return SearchAndRetrieveElement(SearchType.Element, webElementType, identifier, webElement);
         }
 
+        public IWebElement GetElement(string identifier, WebElementType webElementType)
+        {
+            return SearchAndRetrieveElement(SearchType.Driver, webElementType, identifier);
+        }
+
+        public IEnumerable<IWebElement> GetElements(IWebElement webElement, string identifier, WebElementType webElementType)
+        {
+            return SearchAndRetrieveElements(SearchType.Element, webElementType, identifier, webElement);
+        }
+
+        public IEnumerable<IWebElement> GetElements(string identifier, WebElementType webElementType)
+        {
+            return SearchAndRetrieveElements(SearchType.Driver, webElementType, identifier);
+        }
 
         public void PerformSubmit(IWebElement webElement, TimeSpan timeSpanForWaiting)
         {
@@ -122,25 +116,14 @@ namespace WebDriverAutomationFramework
 
         public void ClearAndSendText(string identifier, WebElementType webElementType, string text)
         {
-            var webElement = FindElementByLocator(identifier, webElementType);
+            var webElement = GetElement(identifier, webElementType);
             webElement.Clear();
             webElement.SendKeys(text);
         }
 
-        public object GetAppropriateName(string name, Type instance)
-        {
-            var properties = instance.GetProperties();
-            var firstOrDefault = properties.FirstOrDefault(prop => string.Equals(prop.Name, name, StringComparison.CurrentCultureIgnoreCase));
-            if (firstOrDefault != null)
-            {
-                return firstOrDefault.GetValue(instance);
-            }
-            throw new Exception("no such property wit the identifier:" + name + " could be found in the instance:" + instance);
-        }
-
         public string GetText(string identifier, WebElementType webElementType)
         {
-            var element = FindElementByLocator(identifier, webElementType);
+            var element = GetElement(identifier, webElementType);
             return element.Text;
         }
 
@@ -149,7 +132,7 @@ namespace WebDriverAutomationFramework
             return webElement.Text;
         }
 
-        public void WaitForLoad(string waitElementIdentifier, TimeSpan timeInSeconds, WebElementType webElementType)
+        public void WaitForLoad(string waitElementIdentifier, WebElementType webElementType, TimeSpan timeInSeconds)
         {
             var wait = new WebDriverWait(Driver, timeInSeconds);
             switch (webElementType)
@@ -183,34 +166,20 @@ namespace WebDriverAutomationFramework
             }
         }
 
-        public IWebElement FindElementByLocator(string identifier, WebElementType webElementType)
-        {
-            switch (webElementType)
-            {
-                case WebElementType.Class:
-                    return Driver.FindElement(By.ClassName(identifier));
-                case WebElementType.Id:
-                    return Driver.FindElement(By.Id(identifier));
-                case WebElementType.PartialLinkText:
-                    return Driver.FindElement(By.PartialLinkText(identifier));
-                case WebElementType.TagName:
-                    return Driver.FindElement(By.TagName(identifier));
-                case WebElementType.Name:
-                    return Driver.FindElement(By.Name(identifier));
-                case WebElementType.CssSelector:
-                    return Driver.FindElement(By.CssSelector(identifier));
-                case WebElementType.LinkText:
-                    return Driver.FindElement(By.LinkText(identifier));
-                case WebElementType.Xpath:
-                    return Driver.FindElement(By.XPath(identifier));
-                default:
-                    throw new Exception("The specified WebElementType was not found.");
-            }
-        }
-
         public T GetEquivalentEnumValue<T>(string driverName)
         {
             return (T)Enum.Parse(typeof(T), driverName, true);
+        }
+
+        public object GetMatchingPropertyName(string name, Type instance)
+        {
+            var properties = instance.GetProperties();
+            var firstOrDefault = properties.FirstOrDefault(prop => string.Equals(prop.Name, name, StringComparison.CurrentCultureIgnoreCase));
+            if (firstOrDefault != null)
+            {
+                return firstOrDefault.GetValue(instance);
+            }
+            throw new Exception("no such property wit the identifier:" + name + " could be found in the instance:" + instance);
         }
 
         private static Func<IWebDriver, IWebElement> ElementIsVisible(By locator)
@@ -231,6 +200,82 @@ namespace WebDriverAutomationFramework
         private static IWebElement ElementIfVisible(IWebElement element)
         {
             return (!element.Displayed || !element.Enabled) ? null : element;
+        }
+
+        private IEnumerable<IWebElement> SearchAndRetrieveElements(SearchType searchType, WebElementType webElementType, string identifier, ISearchContext webElement = null)
+        {
+            switch (searchType)
+            {
+                case SearchType.Driver:
+                    return RetrieveElements(Driver, webElementType, identifier);
+                case SearchType.Element:
+                    return RetrieveElements(webElement, webElementType, identifier);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(searchType), searchType, null);
+            }
+        }
+
+        private static IEnumerable<IWebElement> RetrieveElements(ISearchContext searchContext, WebElementType webElementType, string identifier)
+        {
+            switch (webElementType)
+            {
+                case WebElementType.Class:
+                    return searchContext.FindElements(By.ClassName(identifier));
+                case WebElementType.Id:
+                    return searchContext.FindElements(By.Id(identifier));
+                case WebElementType.CssSelector:
+                    return searchContext.FindElements(By.CssSelector(identifier));
+                case WebElementType.LinkText:
+                    return searchContext.FindElements(By.LinkText(identifier));
+                case WebElementType.Name:
+                    return searchContext.FindElements(By.Name(identifier));
+                case WebElementType.PartialLinkText:
+                    return searchContext.FindElements(By.PartialLinkText(identifier));
+                case WebElementType.TagName:
+                    return searchContext.FindElements(By.TagName(identifier));
+                case WebElementType.Xpath:
+                    return searchContext.FindElements(By.XPath(identifier));
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(webElementType), webElementType, null);
+            }
+        }
+
+        private IWebElement SearchAndRetrieveElement(SearchType searchType, WebElementType webElementType, string identifier, ISearchContext webElement = null)
+        {
+            switch (searchType)
+            {
+                case SearchType.Driver:
+                    return RetrieveElement(Driver, webElementType, identifier);
+                case SearchType.Element:
+                    return RetrieveElement(webElement, webElementType, identifier);
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(searchType), searchType, null);
+            }
+        }
+
+        private IWebElement RetrieveElement(ISearchContext searchContext, WebElementType webElementType, string identifier)
+        {
+            switch (webElementType)
+            {
+                case WebElementType.Class:
+                    return searchContext.FindElement(By.ClassName(identifier));
+                case WebElementType.Id:
+                    return searchContext.FindElement(By.Id(identifier));
+                case WebElementType.PartialLinkText:
+                    return searchContext.FindElement(By.PartialLinkText(identifier));
+                case WebElementType.TagName:
+                    return searchContext.FindElement(By.TagName(identifier));
+                case WebElementType.Name:
+                    return searchContext.FindElement(By.Name(identifier));
+                case WebElementType.CssSelector:
+                    return searchContext.FindElement(By.CssSelector(identifier));
+                case WebElementType.LinkText:
+                    return searchContext.FindElement(By.LinkText(identifier));
+                case WebElementType.Xpath:
+                    return searchContext.FindElement(By.XPath(identifier));
+                default:
+                    throw new Exception("The specified WebElementType was not found.");
+            }
         }
     }
 }
