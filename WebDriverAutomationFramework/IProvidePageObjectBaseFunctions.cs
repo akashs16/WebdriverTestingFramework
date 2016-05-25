@@ -33,6 +33,8 @@ namespace WebDriverAutomationFramework
 
         void ClearAndSendText(string identifier, WebElementType webElementType, string text);
 
+        bool WaitTillPropertyChanges(ProvidePageObjectBaseFunctions.ElementProperties validator, TimeSpan timeTillExpiry, string identifier, WebElementType webElementType, string attributeName, string attributeValue);
+
         void ClearAndSendText(IWebElement webElement, string text);
 
         void PerformSubmit(IWebElement button, TimeSpan timeSpanForWaiting);
