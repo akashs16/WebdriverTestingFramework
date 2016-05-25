@@ -29,6 +29,8 @@ namespace WebDriverAutomationFramework
 
         void WaitForLoad(string identifier, WebElementType webElementType, TimeSpan fromSeconds);
 
+        void WaitForUnload(string identifier, WebElementType webElementType, TimeSpan fromSeconds, bool breakIfElementStillVisibleOrEnabled);
+
         void ClearAndSendText(string identifier, WebElementType webElementType, string text);
 
         void ClearAndSendText(IWebElement webElement, string text);

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -224,6 +225,31 @@
             }
         }
 
+        public void WaitForUnload(string waitElementIdentifier, WebElementType webElementType, TimeSpan timeInSeconds, bool breakIfElementStillVisibleOrEnabled)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var itemUnloaded = false;
+
+            while (stopwatch.Elapsed <= timeInSeconds)
+            {
+                try
+                {
+                    this.WaitForLoad(waitElementIdentifier, webElementType, TimeSpan.FromSeconds(1));
+                }
+                catch (TimeoutException)
+                {
+                    itemUnloaded = true;
+                    break;
+                }
+            }
+
+            if (!itemUnloaded && breakIfElementStillVisibleOrEnabled)
+            {
+                throw new Exception("Required element is still visible cannot continue element identifer:" + waitElementIdentifier);
+            }
+        }
+
         public object GetMatchingPropertyName(string name, Type instance)
         {
             var properties = instance.GetProperties();
@@ -235,7 +261,7 @@
             throw new Exception("no such property wit the identifier:" + name + " could be found in the instance:" + instance);
         }
 
-        private static Func<IWebDriver, IWebElement> ElementIsVisible(By locator)
+        private static Func<IWebDriver, bool?> ElementIsVisible(By locator)
         {
             return driver =>
             {
@@ -245,14 +271,14 @@
                 }
                 catch (StaleElementReferenceException)
                 {
-                    return null as IWebElement;
+                    return null;
                 }
             };
         }
 
-        private static IWebElement ElementIfVisible(IWebElement element)
+        private static bool ElementIfVisible(IWebElement element)
         {
-            return (!element.Displayed || !element.Enabled) ? null : element;
+            return (element.Displayed && element.Enabled);
         }
 
         private IEnumerable<IWebElement> SearchAndRetrieveElements(SearchType searchType, WebElementType webElementType, string identifier, ISearchContext webElement = null)
