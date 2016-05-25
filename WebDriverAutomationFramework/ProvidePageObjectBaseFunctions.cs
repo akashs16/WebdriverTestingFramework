@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Opera;
-using OpenQA.Selenium.PhantomJS;
-using OpenQA.Selenium.Safari;
-using OpenQA.Selenium.Support.UI;
-
-namespace WebDriverAutomationFramework
+﻿namespace WebDriverAutomationFramework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Threading;
+    using OpenQA.Selenium;
+    using OpenQA.Selenium.Chrome;
+    using OpenQA.Selenium.Firefox;
+    using OpenQA.Selenium.IE;
+    using OpenQA.Selenium.Interactions;
+    using OpenQA.Selenium.Opera;
+    using OpenQA.Selenium.PhantomJS;
+    using OpenQA.Selenium.Safari;
+    using OpenQA.Selenium.Support.UI;
+
     public class ProvidePageObjectBaseFunctions : IProvidePageObjectBaseFunctions
     {
         private const string DriverLocation = "\\Resources\\Drivers\\";
@@ -31,12 +31,12 @@ namespace WebDriverAutomationFramework
             var resourcePath = new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath;
             var parent = Directory.GetParent(resourcePath);
 
-            SetDriver(driver, parent, DriverLocation);
+            this.SetDriver(driver, parent, DriverLocation);
         }
 
         internal ProvidePageObjectBaseFunctions(IWebDriver driver)
         {
-            Driver = driver;
+            this.Driver = driver;
         }
 
         public void SetDriver(string driver, DirectoryInfo parent, string driverLocation)
@@ -46,38 +46,38 @@ namespace WebDriverAutomationFramework
             switch (enumValue)
             {
                 case DriverType.Chrome:
-                    Driver = new ChromeDriver(path);
+                    this.Driver = new ChromeDriver(path);
                     break;
                 case DriverType.IE:
-                    Driver = new InternetExplorerDriver(path);
+                    this.Driver = new InternetExplorerDriver(path);
                     break;
                 case DriverType.FireFox:
-                    Driver = new FirefoxDriver();
+                    this.Driver = new FirefoxDriver();
                     break;
                 case DriverType.Opera:
-                    Driver = new OperaDriver(path);
+                    this.Driver = new OperaDriver(path);
                     break;
                 case DriverType.Safari:
-                    Driver = new SafariDriver();
+                    this.Driver = new SafariDriver();
                     break;
                 case DriverType.PhantomJS:
-                    Driver = new PhantomJSDriver(path);
+                    this.Driver = new PhantomJSDriver(path);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
-            Driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(6));
+            this.Driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(6));
         }
 
         public void NavigateToUrl(Uri url)
         {
-            Driver.Navigate().GoToUrl(url);
+            this.Driver.Navigate().GoToUrl(url);
         }
 
         public void ClickOnElement(string identifier, WebElementType webElementType, TimeSpan timeSpanForWait)
         {
-            var webElement = GetElement(identifier, webElementType);
+            var webElement = this.GetElement(identifier, webElementType);
             webElement.Click();
             Thread.Sleep(timeSpanForWait);
         }
@@ -90,28 +90,28 @@ namespace WebDriverAutomationFramework
 
         public void ClickOnElement(IWebElement webElement, string identifier, WebElementType webElementType, TimeSpan timeForWaiting)
         {
-            var element = GetElement(webElement, webElementType, identifier);
-            ClickOnElement(element, timeForWaiting);
+            var element = this.GetElement(webElement, webElementType, identifier);
+            this.ClickOnElement(element, timeForWaiting);
         }
 
         public IWebElement GetElement(IWebElement webElement, WebElementType webElementType, string identifier)
         {
-            return SearchAndRetrieveElement(SearchType.Element, webElementType, identifier, webElement);
+            return this.SearchAndRetrieveElement(SearchType.Element, webElementType, identifier, webElement);
         }
 
         public IWebElement GetElement(string identifier, WebElementType webElementType)
         {
-            return SearchAndRetrieveElement(SearchType.Driver, webElementType, identifier);
+            return this.SearchAndRetrieveElement(SearchType.Driver, webElementType, identifier);
         }
 
         public IEnumerable<IWebElement> GetElements(IWebElement webElement, string identifier, WebElementType webElementType)
         {
-            return SearchAndRetrieveElements(SearchType.Element, webElementType, identifier, webElement);
+            return this.SearchAndRetrieveElements(SearchType.Element, webElementType, identifier, webElement);
         }
 
         public IEnumerable<IWebElement> GetElements(string identifier, WebElementType webElementType)
         {
-            return SearchAndRetrieveElements(SearchType.Driver, webElementType, identifier);
+            return this.SearchAndRetrieveElements(SearchType.Driver, webElementType, identifier);
         }
 
         public void PerformSubmit(IWebElement webElement, TimeSpan timeSpanForWaiting)
@@ -128,52 +128,52 @@ namespace WebDriverAutomationFramework
 
         public void ClearAndSendText(string identifier, WebElementType webElementType, string text)
         {
-            var webElement = GetElement(identifier, webElementType);
+            var webElement = this.GetElement(identifier, webElementType);
             webElement.Clear();
             webElement.SendKeys(text);
         }
 
         public string GetText(string identifier, WebElementType webElementType)
         {
-            var element = GetElement(identifier, webElementType);
+            var element = this.GetElement(identifier, webElementType);
             return element.Text;
         }
 
         public object GetAttribute(IWebElement webElement, string identifier, WebElementType webElementType, string attribute)
         {
-            var element = GetElement(webElement, webElementType, identifier);
+            var element = this.GetElement(webElement, webElementType, identifier);
             return element.GetAttribute(attribute);
         }
 
         public object GetAttribute(string identifier, WebElementType webElementType, string attribute)
         {
-            var element = GetElement(identifier, webElementType);
+            var element = this.GetElement(identifier, webElementType);
             return element.GetAttribute(attribute);
         }
 
         public void SelectWebElement(string identifier, WebElementType webElementType, string selectionValue, SelectionType selectionType)
         {
-            var element = GetElement(identifier, webElementType);
+            var element = this.GetElement(identifier, webElementType);
             var select = new SelectElement(element);
-            Select(select, selectionType, selectionValue);
+            this.Select(select, selectionType, selectionValue);
         }
 
         public void SelectWebElement(IWebElement webElement, WebElementType webElementType, string selectionValue, SelectionType selectionType)
         {
             var select = new SelectElement(webElement);
-            Select(select, selectionType, selectionValue);
+            this.Select(select, selectionType, selectionValue);
         }
 
         public void SelectWebElement(IWebElement webElement, string identifier, WebElementType webElementType, string selectionValue, SelectionType selectionType)
         {
-            var element = GetElement(webElement, webElementType, identifier);
+            var element = this.GetElement(webElement, webElementType, identifier);
             var select = new SelectElement(element);
-            Select(select, selectionType, selectionValue);
+            this.Select(select, selectionType, selectionValue);
         }
 
         public void MoveToElement(string identifier, WebElementType webElementType)
         {
-            var element = GetElement(identifier, webElementType);
+            var element = this.GetElement(identifier, webElementType);
 
             var action = new Actions(this.Driver);
             action.MoveToElement(element).Perform();
@@ -192,7 +192,7 @@ namespace WebDriverAutomationFramework
 
         public void WaitForLoad(string waitElementIdentifier, WebElementType webElementType, TimeSpan timeInSeconds)
         {
-            var wait = new WebDriverWait(Driver, timeInSeconds);
+            var wait = new WebDriverWait(this.Driver, timeInSeconds);
             switch (webElementType)
             {
                 case WebElementType.Class:
@@ -260,7 +260,7 @@ namespace WebDriverAutomationFramework
             switch (searchType)
             {
                 case SearchType.Driver:
-                    return RetrieveElements(Driver, webElementType, identifier);
+                    return RetrieveElements(this.Driver, webElementType, identifier);
                 case SearchType.Element:
                     return RetrieveElements(webElement, webElementType, identifier);
                 default:
@@ -298,7 +298,7 @@ namespace WebDriverAutomationFramework
             switch (searchType)
             {
                 case SearchType.Driver:
-                    return RetrieveElement(Driver, webElementType, identifier);
+                    return RetrieveElement(this.Driver, webElementType, identifier);
                 case SearchType.Element:
                     return RetrieveElement(webElement, webElementType, identifier);
                 default:

@@ -2,7 +2,7 @@
 {
     public enum SearchType
     {
-        Driver = 1,
-        Element = 2,
+        Driver = 0,
+        Element = 1
     }
 }

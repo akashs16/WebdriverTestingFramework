@@ -1,7 +1,7 @@
-﻿using OpenQA.Selenium;
-
-namespace WebDriverAutomationFramework
+﻿namespace WebDriverAutomationFramework
 {
+    using OpenQA.Selenium;
+
     public class BaseOperationsFactory
     {
         public IProvidePageObjectBaseFunctions Create()

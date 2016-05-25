@@ -1,9 +1,9 @@
-﻿using System;
-using NUnit.Framework;
-using WebDriverAutomationFramework;
-
-namespace WebDriverFramworkTests
+﻿namespace WebDriverFramworkTests
 {
+    using System;
+    using NUnit.Framework;
+    using WebDriverAutomationFramework;
+
     [TestFixture]
     public class ProvidePageObjectBaseFunctionsTests
     {
