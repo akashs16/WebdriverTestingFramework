@@ -261,7 +261,7 @@
             throw new Exception("no such property wit the identifier:" + name + " could be found in the instance:" + instance);
         }
 
-        private static Func<IWebDriver, bool?> ElementIsVisible(By locator)
+        private static Func<IWebDriver, bool> ElementIsVisible(By locator)
         {
             return driver =>
             {
@@ -271,7 +271,7 @@
                 }
                 catch (StaleElementReferenceException)
                 {
-                    return null;
+                    return false;
                 }
             };
         }
