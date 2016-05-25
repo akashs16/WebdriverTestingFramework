@@ -237,7 +237,7 @@
                 {
                     this.WaitForLoad(waitElementIdentifier, webElementType, TimeSpan.FromSeconds(1));
                 }
-                catch (TimeoutException)
+                catch (WebDriverTimeoutException)
                 {
                     itemUnloaded = true;
                     break;

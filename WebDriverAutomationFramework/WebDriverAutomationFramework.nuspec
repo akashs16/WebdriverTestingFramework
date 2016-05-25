@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>WebdriverAutomationFramework</id>
-    <version>1.1.2</version>
+    <version>1.1.4</version>
     <title></title>
     <authors>Akash Srivastava</authors>
     <owners>Reebonz</owners>
@@ -11,7 +11,7 @@
     <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package is created to as to abstact the interations between webdriver and the page objects</description>
-    <releaseNotes>added functionality to wait for elements to become hidden or be disabled</releaseNotes>
+    <releaseNotes>the famework doesn't handle nullable bool anymore when trying to wait</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>selenium framework</tags>
 	<dependencies>
