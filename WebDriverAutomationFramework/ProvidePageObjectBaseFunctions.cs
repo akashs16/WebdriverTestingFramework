@@ -263,7 +263,7 @@
             throw new Exception("no such property wit the identifier:" + name + " could be found in the instance:" + instance);
         }
 
-        public bool WaitTillPropertyChanges(ElementProperties validator, TimeSpan timeTillExpiry, string identifier, WebElementType webElementType, string attributeName, string attributeValue)
+        public bool WaitTillSpecifiedCondition(ElementProperties validator, TimeSpan timeTillExpiry, string identifier, WebElementType webElementType, string attributeName, string attributeValue)
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
