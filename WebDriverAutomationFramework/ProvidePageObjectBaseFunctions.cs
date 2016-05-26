@@ -23,7 +23,7 @@
 
         public IWebDriver Driver { get; set; }
 
-        public delegate bool ElementProperties(string identifier, WebElementType webElementType, string attributeName, string attributeValue);
+        public delegate bool ElementProperties(params object[] objects);
 
         internal ProvidePageObjectBaseFunctions()
         {
@@ -252,6 +252,24 @@
             }
         }
 
+        public bool WaitTillSpecifiedCondition(ElementProperties validator, TimeSpan timeTillExpiry, params object[] objects)
+        {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            var result = false;
+            while (stopWatch.Elapsed <= timeTillExpiry)
+            {
+                result = validator(objects);
+
+                if (result)
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
         public object GetMatchingPropertyName(string name, Type instance)
         {
             var properties = instance.GetProperties();
@@ -261,24 +279,6 @@
                 return firstOrDefault.GetValue(instance);
             }
             throw new Exception("no such property wit the identifier:" + name + " could be found in the instance:" + instance);
-        }
-
-        public bool WaitTillSpecifiedCondition(ElementProperties validator, TimeSpan timeTillExpiry, string identifier, WebElementType webElementType, string attributeName, string attributeValue)
-        {
-            var stopWatch = new Stopwatch();
-            stopWatch.Start();
-            var result = false;
-            while (stopWatch.Elapsed <= timeTillExpiry)
-            {
-                result = validator(identifier, webElementType, attributeName, attributeValue);
-
-                if (result)
-                {
-                    break;
-                }
-            }
-
-            return result;
         }
 
         private static Func<IWebDriver, bool> ElementIsVisible(By locator)

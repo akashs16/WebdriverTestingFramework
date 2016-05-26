@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>WebdriverAutomationFramework</id>
-    <version>1.1.5</version>
+    <version>1.1.6</version>
     <title></title>
     <authors>Akash Srivastava</authors>
     <owners>Reebonz</owners>
@@ -11,7 +11,7 @@
     <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package is created to as to abstact the interations between webdriver and the page objects</description>
-    <releaseNotes>provided more generic wait</releaseNotes>
+    <releaseNotes>better wait naming</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>selenium framework</tags>
 	<dependencies>
