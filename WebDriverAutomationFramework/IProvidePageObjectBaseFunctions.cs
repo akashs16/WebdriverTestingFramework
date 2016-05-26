@@ -58,5 +58,7 @@ namespace WebDriverAutomationFramework
         void MoveToElement(string identifier, WebElementType webElementType);
 
         void MoveToElement(IWebElement webElement);
+
+        void MoveToElementWithRetries(IWebElement moveToElement, IWebElement waitForElement, int numberOfRetries = 5);
     }
 }

@@ -188,6 +188,24 @@
             action.MoveToElement(webElement).Perform();
         }
 
+        public void MoveToElementWithRetries(IWebElement moveToElement, IWebElement waitForElement, int numberOfRetries = 5)
+        {
+            while (numberOfRetries > 0)
+            {
+                try
+                {
+                    this.MoveToElement(moveToElement);
+                    var wait = new WebDriverWait(this.Driver, TimeSpan.FromSeconds(5));
+                    wait.Until(x => (waitForElement.Displayed && waitForElement.Enabled));
+                    break;
+                }
+                catch (WebDriverTimeoutException)
+                {
+                    this.MoveToElementWithRetries(moveToElement, waitForElement, numberOfRetries--);
+                }
+            }
+        }
+
         public string GetText(IWebElement webElement)
         {
             return webElement.Text;
